@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/profile_setup_screen.dart';
+import 'package:myapp/widgets/custom_next_button.dart';
 
 class OnboardScreenthree extends StatelessWidget {
   const OnboardScreenthree({super.key});
@@ -175,30 +177,21 @@ class OnboardScreenthree extends StatelessWidget {
                 child: Column(
                   children: [
 
-                    // NEXT BUTTON
-                    Container(
-                      width: 320,
-                      height: 58,
+                        // NEXT BUTTON
+ CustomNextButton(
 
-                      decoration: BoxDecoration(
-                        color: Color(0xFFD7FF00),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
+  onTap: () {
 
-                      child: Center(
-                        child: Text(
-                          "NEXT",
+    Navigator.push(
 
-                          style: TextStyle(
-                            fontFamily: "Bebas",
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ),
-                    ),
+      context,
+
+      MaterialPageRoute(
+        builder: (context) => ProfileSetupScreen(),
+      ),
+    );
+  },
+),
 
                     SizedBox(height: 10),
 
