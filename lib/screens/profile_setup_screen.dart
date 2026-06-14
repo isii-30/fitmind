@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/firestore_service.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:myapp/screens/home_screen.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -327,12 +328,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               fitnessGoal: selectedGoal!,
                               fitnessLevel: selectedLevel!,
                             );
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Profile saved successfully!'),
-                              ),
-                            );
+                            if (context.mounted) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
