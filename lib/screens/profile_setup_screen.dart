@@ -63,6 +63,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
           SafeArea(
             child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: Form(
                 key: _formKey,
                 child: Column(
