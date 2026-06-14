@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/firestore_service.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -225,7 +226,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               });
                             },
                           ),
-                          
+
                           if (goalError != null)
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
@@ -267,8 +268,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         ],
                       ),
                     ),
-                          
-                          
 
                     const SizedBox(height: 30),
 
@@ -277,7 +276,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       width: double.infinity,
                       height: 60,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             genderError = selectedGender == null
                                 ? "Please select a gender"
@@ -296,15 +295,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               genderError == null &&
                               goalError == null &&
                               levelError == null) {
-                            print(_fullNameController.text);
-                            print(_emailController.text);
-                            print(_ageController.text);
-                            print(_heightController.text);
-                            print(_weightController.text);
+                            await FirestoreService().saveUserProfile(
+                              fullName: _fullNameController.text,
+                              email: _emailController.text,
+                              age: int.parse(_ageController.text),
+                              gender: selectedGender!,
+                              height: int.parse(_heightController.text),
+                              weight: double.parse(_weightController.text),
+                              fitnessGoal: selectedGoal!,
+                              fitnessLevel: selectedLevel!,
+                            );
 
-                            print(selectedGender);
-                            print(selectedGoal);
-                            print(selectedLevel);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Profile saved successfully!'),
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(
