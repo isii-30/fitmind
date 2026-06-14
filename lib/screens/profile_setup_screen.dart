@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/firestore_service.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -24,6 +26,21 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   String? genderError;
   String? goalError;
   String? levelError;
+
+  File? _selectedImage;
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,14 +119,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           Stack(
                             alignment: Alignment.bottomRight,
                             children: [
-                              const CircleAvatar(
+                              CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Colors.white24,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 50,
-                                  color: Colors.white,
-                                ),
+                                backgroundImage: _selectedImage != null
+                                    ? FileImage(_selectedImage!)
+                                    : null,
+                                child: _selectedImage == null
+                                    ? const Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.white,
+                                      )
+                                    : null,
                               ),
 
                               Container(
@@ -118,7 +140,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                   color: Colors.white,
                                 ),
                                 child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: _pickImage,
                                   icon: const Icon(Icons.camera_alt),
                                 ),
                               ),
